@@ -1,0 +1,24 @@
+user.js
+
+const name='abhishek'
+const age='21'
+
+const userdetails=(a)=>{
+  console.log('userdetails function is called...',a)
+}
+
+module.exports={
+  name,age,userdetails
+}
+
+
+app.js
+
+console.log("app.js is called...");
+
+const user=require('./user')
+console.log(user.name)
+console.log(user.name)
+console.log(user.age)
+
+user.userdetails(100)
