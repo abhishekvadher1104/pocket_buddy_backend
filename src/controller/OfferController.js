@@ -45,20 +45,31 @@ const getAllOffers = async (req, res) => {
   }
 };
 
-const getAllOffersByUserId = async(req,res) =>{
-  
+const getAllOffersByUserId = async (req, res) => {
   try {
-    console.log("User ID:", req.params.userId); 
-    const offers = await offerSchema.find({userId:req.params.userId})
-      res.status(200).json({
-        message:"offers found...",
-        data:offers
-      })
+    console.log("User ID:", req.params.userId);
+    const offers = await offerSchema.find({ userId: req.params.userId });
+    res.status(200).json({
+      message: "offers found...",
+      data: offers,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+};
+const getOfferByOfferId = async(req,res) =>{
+  try {
+    const offers = await offerSchema.findById(req.params.id)
+    res.status(200).json({
+      message:"restaurant found",
+      data:offers
+    })
   } catch (error) {
     res.status(500).json({
       message:error
     })
-    
   }
 }
 const addOfferWithFile = async (req, res) => {
@@ -86,13 +97,14 @@ const addOfferWithFile = async (req, res) => {
   });
 };
 
-const topRatedRestro = async(req,res) =>{
-  const topRestro = await offerSchema.find()
-}
+const topRatedRestro = async (req, res) => {
+  const topRestro = await offerSchema.find();
+};
 
 module.exports = {
   addOffer,
   getAllOffers,
   addOfferWithFile,
-  getAllOffersByUserId
+  getAllOffersByUserId,
+  getOfferByOfferId
 };
