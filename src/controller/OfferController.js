@@ -32,7 +32,9 @@ const getAllOffers = async (req, res) => {
   try {
     const offersfetched = await offerSchema
       .find()
-      .populate("stateId cityId areaId");
+      .populate("areaId", "name")  
+      .populate("cityId", "name")  
+      .populate("stateId", "name"); 
 
     res.status(200).json({
       message: "all offers fetched...",
@@ -48,7 +50,8 @@ const getAllOffers = async (req, res) => {
 const getAllOffersByUserId = async (req, res) => {
   try {
     console.log("User ID:", req.params.userId);
-    const offers = await offerSchema.find({ userId: req.params.userId });
+    const offers = await offerSchema.find({ userId: req.params.userId }).populate("areaId", "name") 
+    .populate("cityId", "name") 
     res.status(200).json({
       message: "offers found...",
       data: offers,

@@ -2,18 +2,23 @@ const userModel = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const mailUtils = require("../utils/MailUtils");
 
-
 const signup = async (req, res) => {
   try {
-    const hassedpassword = bcrypt.hashSync(req.body.password, 10);
-    req.body.password = hassedpassword;
+    if (!req.body.password) {
+      return res.status(400).json({ message: "Password is required" });
+    }
+    req.body.password = bcrypt.hashSync(req.body.password, 10);
     const newUser = await userModel.create(req.body);
 
-    await mailUtils.sendingMail(
-      newUser.email,
-      "welcome mail from pocketBuddy",
-      "Successfully registered at pocket buddy..."
-    );
+    try {
+      await mailUtils.sendingMail(
+        newUser.email,
+        "Welcome mail from PocketBuddy",
+        "Successfully registered at PocketBuddy..."
+      );
+    } catch (mailError) {
+      console.error("Email sending failed:", mailError);
+    }
     res.status(201).json({
       message: "user created Successfully",
       data: newUser,
@@ -33,13 +38,10 @@ const login = async (req, res) => {
     const password = req.body.password;
     const email = req.body.email;
 
-
     const findUserByEmail = await userModel.findOne({ email: email });
     console.log(findUserByEmail);
     if (findUserByEmail != null) {
       const isMatch = bcrypt.compareSync(password, findUserByEmail.password);
-      
-
 
       if (isMatch == true) {
         res.status(200).json({
