@@ -32,36 +32,33 @@ const signup = async (req, res) => {
     });
   }
 };
-
 const login = async (req, res) => {
   try {
-    const password = req.body.password;
-    const email = req.body.email;
+    const { email, password } = req.body;
 
-    const findUserByEmail = await userModel.findOne({ email: email });
-    console.log(findUserByEmail);
-    if (findUserByEmail != null) {
-      const isMatch = bcrypt.compareSync(password, findUserByEmail.password);
+    const findUserByEmail = await userModel.findOne({ email });
+    console.log(findUserByEmail); // Fixed syntax error
 
-      if (isMatch == true) {
-        res.status(200).json({
-          message: "Login Successfully..",
-          data: findUserByEmail,
-        });
-      } else {
-        res.status(404).json({
-          message: "Invalid credentials...",
-        });
-      }
-    } else {
-      res.status(404).json({
-        message: "Email not found",
-      });
+    if (!findUserByEmail) {
+      return res.status(404).json({ message: "Email not found" });
     }
+
+    const isMatch = bcrypt.compareSync(password, findUserByEmail.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials..." });
+    }
+
+    res.status(200).json({
+      message: "Login Successfully..",
+      data: findUserByEmail,
+    });
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
   }
 };
+
 
 const getAllUsers = async (req, res) => {
   const users = await userModel.find().populate("roleID");
