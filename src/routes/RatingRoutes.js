@@ -6,3 +6,5 @@ routes.get("/getrating/:restroId",ratingController.getRatingsByRestroId)
 routes.get("/getallrestroratings",ratingController.getAllRestroRating)
 
 module.exports = routes
+
+

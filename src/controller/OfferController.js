@@ -93,7 +93,7 @@ const addOfferWithFile = async (req, res) => {
       const savedofferImage = await offerSchema.create(req.body);
 
       res.status(200).json({
-        message: "hording saved successfully",
+        message: "photo saved successfully",
         data: savedofferImage,
       });
     }
@@ -103,6 +103,7 @@ const addOfferWithFile = async (req, res) => {
 const topRatedRestro = async (req, res) => {
   const topRestro = await offerSchema.find();
 };
+
 
 module.exports = {
   addOffer,

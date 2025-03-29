@@ -13,7 +13,7 @@ const sendingMail = async (to, subject, text) => {
     from: "pcktbuddy@gmail.com",
     to: to,
     subject: subject,
-    text: text,
+    html: text,
   };
 
   const mailresponse = await transporter.sendMail(mailOptions);

@@ -26,6 +26,21 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
+  },
+  profilePic:{
+    type:String
+  },
+  bio:{
+    type:String
+  },
+  city:{
+    type:String
+  },
+  Restaurant:{
+    type:String
+  },
+  area:{
+    type:String
   }
 });
 
