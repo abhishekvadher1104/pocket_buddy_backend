@@ -1,43 +1,36 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
+const ratingSchema = require('../models/RatingModels')
 
 const offerSchema = new mongoose.Schema(
   {
-    restroName: {
-      type: String,
-      required: true,
-    },
     offer: {
       type: String,
-      require: true,
+      // required: true,
     },
     description: {
       type: String,
-      require: true,
-    },
-    isActive: {
-      type: Boolean,
-      default: true,
+      // required: true,
     },
     startDate: {
       type: Date,
-      required: true,
+      // required: true,
     },
     endDate: {
       type: Date,
-      required: true,
+      // required: true,
     },
     latitude: {
       type: Number,
-      required: true,
+      // required: true,
     },
     longitude: {
       type: Number,
-      required: true,
+      // required: true,
     },
-    imageURL:{
-      type:String
+    imageURL: {
+      type: String,
     },
     foodType: {
       enum: [
@@ -49,24 +42,12 @@ const offerSchema = new mongoose.Schema(
         "italian",
       ],
       type: String,
-      required: true,
+      // required: true,
     },
-    areaId: {
+    userId: {
       type: Schema.Types.ObjectId,
-      ref: "area",
+      ref: "userModel",
     },
-    cityId: {
-      type: Schema.Types.ObjectId,
-      ref: "City",
-    },
-    stateId: {
-      type: Schema.Types.ObjectId,
-      ref: "State",
-    },
-    userId:{
-      type:Schema.Types.ObjectId,
-      ref:"userModel"
-    }
   },
   {
     timestamps: true,

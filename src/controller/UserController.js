@@ -2,6 +2,7 @@ const userModel = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const mailUtils = require("../utils/MailUtils");
 const jwt = require("jsonwebtoken");
+const OfferModels = require("../models/OfferModels");
 const secret = "gecBhavnagar";
 
 const signup = async (req, res) => {
@@ -124,7 +125,7 @@ const resetPassword = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-  const users = await userModel.find().populate("roleID");
+  // const users = await userModel.find().populate("roleID");
 
   res.json({
     message: "All users fetched...",
@@ -135,7 +136,10 @@ const updateUserDetails = async (req, res) => {
   try {
     const { Restaurant, firstName, lastName, bio, city, area } = req.body;
     const { userId } = req.params;
-    let profilePic = req.file ? req.file.path : undefined;
+
+    let profilePic = req.file?.path; // 👈 Fixed: Avoid undefined error
+
+    console.log("Uploaded File:", req.file); // 👈 Debugging ke liye
 
     const updatedUserDetails = await userModel.findByIdAndUpdate(
       userId,
@@ -146,60 +150,27 @@ const updateUserDetails = async (req, res) => {
         bio,
         city,
         area,
-        profilePic: profilePic || undefined,
+        profilePic: profilePic || undefined, // 👈 Fixed: Agar undefined hai to ignore karega
       },
       { new: true }
     );
+
     if (!updatedUserDetails) {
       return res.status(404).json({ message: "User not found" });
     }
+
     res.status(200).json({
-      message: "profile updated Successfully",
+      message: "Profile updated successfully",
       data: updatedUserDetails,
     });
   } catch (error) {
+    console.error("Error updating user:", error); // 👈 Debugging ke liye
     res.status(500).json({
-      message: error,
+      message: "Internal server error",
+      error: error.message,
     });
   }
 };
-
-// const updateRestroOwnerDetails = async (req, res) => {
-//   try {
-//     const { firstName, lastName, city, bio, Restaurant, area } = req.body;
-//     const { userId } = req.params;
-
-//     let profilePicPath = req.file ? req.file.path : undefined;
-
-//     const updatedUserDetails = await userModel.findByIdAndUpdate(
-//       userId,
-//       {
-//         firstName,
-//         lastName,
-//         city,
-//         bio,
-//         Restaurant,
-//         area,
-//         profilePicPath: profilePic || undefined
-//       },
-//       { new: true }
-//     );
-
-//     console.log(updatedUserDetails);
-
-//     if (!updatedUserDetails) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-
-//     res.status(200).json({
-//       message: "Profile updated successfully",
-//       data: updatedUserDetails,
-//     });
-//   } catch (error) {
-//     console.error("Update Error:", error);
-//     res.status(500).json({ message: "error occured" });
-//   }
-// };
 
 const addUser = async (req, res) => {
   const user = await userModel.create(req.body);
@@ -208,6 +179,21 @@ const addUser = async (req, res) => {
     message: "User saved successfully...",
     data: user,
   });
+};
+const getRestroName = async (req, res) => {
+  try {
+    const restroName = await userModel.find().select("Restaurant city area");
+    // console.log(restroName);
+
+    res.status(200).json({
+      data: restroName,
+      message: "restroName fetched successfully...",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "cannot fetched restro Name...",
+    });
+  }
 };
 
 const deleteUser = async (req, res) => {
@@ -238,5 +224,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   updateUserDetails,
-  // updateRestroOwnerDetails,
+  getRestroName,
 };

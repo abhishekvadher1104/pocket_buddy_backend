@@ -2,8 +2,8 @@ const routes = require("express").Router()
 const ratingController = require('../controller/RatingController')
 
 routes.post("/addrating",ratingController.addRatings)
-routes.get("/getrating/:restroId",ratingController.getRatingsByRestroId)
-routes.get("/getallrestroratings",ratingController.getAllRestroRating)
+routes.get("/getallratingsofoffer/:id",ratingController.getAllRatingsOfOffer)
+routes.get('/getratingsofuseridandofferid/:userId/:offerId',ratingController.getRatingsByUserIdAndOfferId)
 
 module.exports = routes
 
