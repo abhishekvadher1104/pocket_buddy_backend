@@ -32,6 +32,8 @@ app.use("/rating", ratingRoutes);
 const profileRoutes = require("./src/routes/ProfileRoutes");
 app.use("/profile", profileRoutes);
 
+const historyRoutes = require("./src/routes/HistoryRoutes");
+app.use("/history", historyRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log("server is running on port number", PORT);

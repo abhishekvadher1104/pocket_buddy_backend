@@ -2,7 +2,6 @@ const userModel = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const mailUtils = require("../utils/MailUtils");
 const jwt = require("jsonwebtoken");
-const OfferModels = require("../models/OfferModels");
 const secret = "gecBhavnagar";
 
 const signup = async (req, res) => {
