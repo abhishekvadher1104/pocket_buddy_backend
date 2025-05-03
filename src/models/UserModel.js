@@ -15,10 +15,10 @@ const userSchema = new Schema({
     type: Boolean,
     default: true,
   },
-  role:{
-    enum:["user","restaurant_owner"],
-    type:String,
-    required:true
+  role: {
+    enum: ["user", "restaurant_owner"],
+    type: String,
+    required: true,
   },
   email: {
     type: String,
@@ -27,21 +27,21 @@ const userSchema = new Schema({
   password: {
     type: String,
   },
-  profilePic:{
-    type:String
+  profilePic: {
+    type: String,
   },
-  bio:{
-    type:String
+  bio: {
+    type: String,
   },
-  city:{
-    type:String
+  city: {
+    type: String,
   },
-  Restaurant:{
-    type:String
+  Restaurant: {
+    type: String,
   },
-  area:{
-    type:String
-  }
+  area: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("userModel", userSchema);

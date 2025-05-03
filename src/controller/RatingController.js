@@ -94,12 +94,15 @@ const fetchAllRatingOfUser = async (req, res) => {
 
 const getAllRatingsOfOffer = async (req, res) => {
   try {
-    const ratings = await ratingsSchema.find({ offerId: req.params.offerId }).populate('offerId').populate('userId');
+    const ratings = await ratingsSchema
+      .find({ offerId: req.params.offerId })
+      .populate("offerId")
+      .populate("userId");
     if (!ratings) {
       res.status(404).json({
         message: "not ratings found.....!!!",
       });
-    } else {     
+    } else {
       res.status(200).json({
         message: "ratings found",
         data: ratings,
@@ -112,9 +115,50 @@ const getAllRatingsOfOffer = async (req, res) => {
   }
 };
 
+const topRatedOffers = async (req, res) => {
+  try {
+    const averages = await ratingsSchema.aggregate([
+      {
+        $group: {
+          _id: "$offerId",
+          averageRating: { $avg: "$rating" },
+        },
+      },
+      {
+        $match: {
+          averageRating: { $gte: 4 },
+        },
+      },
+    ]);
+
+    const topOfferIds = averages.map((item) => item._id);
+
+    const offers = await ratingsSchema
+      .find({ offerId: { $in: topOfferIds } })
+      .populate({
+        path: "offerId",
+        select: "offer description imageURL startDate endDate", 
+      })
+      .populate("userId");
+
+    res.status(200).json({
+      message: "Found top rated offers",
+      data: [{ averages, offers }],
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+
+
 module.exports = {
   addRatings,
   getAllRatingsOfOffer,
   getRatingsByUserIdAndOfferId,
   fetchAllRatingOfUser,
+  topRatedOffers
 };

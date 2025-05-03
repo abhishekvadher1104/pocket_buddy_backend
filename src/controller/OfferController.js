@@ -98,15 +98,10 @@ const addOfferWithFile = async (req, res) => {
   }
 };
 
-const topRatedRestro = async (req, res) => {
-  const topRestro = await offerSchema.find();
-};
-
 module.exports = {
   addOffer,
   getAllOffers,
   addOfferWithFile,
   getAllOffersByUserId,
   getOfferByOfferId,
- 
 };
