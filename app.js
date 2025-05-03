@@ -14,26 +14,16 @@ mongoose.connect("mongodb://localhost:27017/Royal_learning_25").then(() => {
 const userRoutes = require("./src/routes/UserRoutes");
 app.use(userRoutes);
 
-const stateRoutes = require("./src/routes/StateRoutes");
-app.use("/state", stateRoutes);
-
-const cityRoutes = require("./src/routes/CityRoutes");
-app.use("/city", cityRoutes);
-
-const areaRoutes = require("./src/routes/AreaRoutes");
-app.use("/area", areaRoutes);
-
 const offerRoutes = require("./src/routes/OfferRoutes");
 app.use("/offer", offerRoutes);
 
 const ratingRoutes = require("./src/routes/RatingRoutes");
 app.use("/rating", ratingRoutes);
 
-const profileRoutes = require("./src/routes/ProfileRoutes");
-app.use("/profile", profileRoutes);
-
 const historyRoutes = require("./src/routes/HistoryRoutes");
 app.use("/history", historyRoutes);
+const wishRoutes = require("./src/routes/wishListRoutes");
+app.use("/wishlist", wishRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log("server is running on port number", PORT);
