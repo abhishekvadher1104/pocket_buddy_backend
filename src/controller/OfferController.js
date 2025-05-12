@@ -97,6 +97,80 @@ const addOfferWithFile = async (req, res) => {
     });
   }
 };
+const updateOfferWithFile = async (req, res) => {
+  try {
+    const { id } = req.params; 
+
+    const {
+      offer,
+      description,
+      startDate,
+      endDate,
+      latitude,
+      longitude,
+      foodType,
+    } = req.body;
+
+    let imageURL = req.file ? req.file.path : undefined;
+
+    const updateData = {
+      offer,
+      description,
+      startDate,
+      endDate,
+      latitude,
+      longitude,
+      foodType,
+    };
+
+    if (imageURL) {
+      updateData.imageURL = imageURL;
+    }
+
+    const updatedOffer = await offerSchema.findByIdAndUpdate(
+      id,
+      updateData,
+      { new: true }
+    );
+
+    if (!updatedOffer) {
+      return res.status(404).json({ message: "Offer not found" });
+    }
+
+    res.status(200).json({
+      message: "Offer updated successfully",
+      data: updatedOffer,
+    });
+  } catch (error) {
+    console.error("Error updating offer:", error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+const deleteOffer = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedOffer = await offerSchema.findByIdAndDelete(id);
+    if (!deletedOffer) {
+      return res.status(404).json({ message: "Offer not found" });
+    }
+    res.status(200).json({
+      message: "Offer deleted successfully",
+      data: deletedOffer,
+    });
+  } catch (error) {
+    console.error("Error deleting offer:", error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+// ...existing code...
 
 module.exports = {
   addOffer,
@@ -104,4 +178,6 @@ module.exports = {
   addOfferWithFile,
   getAllOffersByUserId,
   getOfferByOfferId,
+  updateOfferWithFile,
+  deleteOffer 
 };

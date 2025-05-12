@@ -20,8 +20,6 @@ app.use("/offer", offerRoutes);
 const ratingRoutes = require("./src/routes/RatingRoutes");
 app.use("/rating", ratingRoutes);
 
-const historyRoutes = require("./src/routes/HistoryRoutes");
-app.use("/history", historyRoutes);
 const wishRoutes = require("./src/routes/wishListRoutes");
 app.use("/wishlist", wishRoutes);
 const PORT = process.env.PORT || 5000;

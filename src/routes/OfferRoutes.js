@@ -1,12 +1,22 @@
 const routes = require("express").Router();
-const {upload} = require('../utils/CloudinaryUtils')
+const { upload } = require("../utils/CloudinaryUtils");
 
 const offerController = require("../controller/OfferController");
 
 routes.post("/addoffer", offerController.addOffer);
 routes.get("/getalloffers", offerController.getAllOffers);
-routes.post("/addofferwithfile",upload.single('imageURL'), offerController.addOfferWithFile);
+routes.post(
+  "/addofferwithfile",
+  upload.single("imageURL"),
+  offerController.addOfferWithFile
+);
 routes.get("/getofferbyuserid/:userId", offerController.getAllOffersByUserId);
-routes.get('/getofferbyid/:id',offerController.getOfferByOfferId)
+routes.get("/getofferbyid/:id", offerController.getOfferByOfferId);
+routes.put(
+  "/updateoffer/:id",
+  upload.single("image"),
+  offerController.updateOfferWithFile
+);
+routes.delete("/deleteoffer/:id", offerController.deleteOffer);
 
 module.exports = routes;
